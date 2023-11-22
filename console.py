@@ -126,13 +126,13 @@ class HBNBCommand(cmd.Cmd):
     def process_param(self, param):
         """Process and convert individual parameter to correct data type."""
         key, _, value = param.partition('=')
-        if '"' in value:
-            value = value.strip('"').replace('_', ' ').replace('\\"', '"')
+        if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+            value = value[1:-1].replace('_', ' ').replace('\\"', '"')
         else:
             try:
                 value = float(value) if '.' in value else int(value)
             except ValueError:
-                return None, None
+                return key, None
         return key, value
 
     def do_create(self, args):
@@ -153,6 +153,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name](**valid_params)
         storage.save()
         print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
