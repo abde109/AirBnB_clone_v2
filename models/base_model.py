@@ -40,11 +40,12 @@ class BaseModel:
         storage.save()
 
     def to_dict(self):
-        """Convert instance into dict format"""
+        """Convert instance into dict format, removing non-serializable attributes."""
         dictionary = self.__dict__.copy()
-        dictionary['__class__'] = (str(type(self)).split('.')[-1]).split('\'')[0]
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary.pop('_sa_instance_state', None)
+        dictionary['__class__'] = self.__class__.__name__
+        dictionary['created_at'] = dictionary['created_at'].isoformat() if 'created_at' in dictionary else None
+        dictionary['updated_at'] = dictionary['updated_at'].isoformat() if 'updated_at' in dictionary else None
         return dictionary
     def delete(self):
             """Delete the current instance from the storage"""
