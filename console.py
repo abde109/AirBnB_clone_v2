@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -29,6 +30,15 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
+    valid_keys = {
+               'BaseModel': ['id' , 'created_at', 'updated_at'], 
+               'User': ['id' , 'created_at', 'updated_at',  'email' , 'password', 'first_name', 'last_name'], 
+               'City': ['id' , 'created_at', 'updated_at', 'state_id', 'name'],
+               'State': ['id' , 'created_at', 'updated_at', 'name'], 
+               'Place': ['id' , 'created_at', 'updated_at', 'city_id', 'user_id' , 'name','number_rooms', 'number_bathrooms' ,'max_guest' ,'price_by_night' , 'latitude' ,'longitude'], 
+               'Amenity': ['id' , 'created_at', 'updated_at', 'name'],
+               'Review': ['id' , 'created_at', 'updated_at', 'place_id', 'user_id', 'text']
+               }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -113,18 +123,36 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def process_param(self, param):
+        """Process and convert individual parameter to correct data type."""
+        key, _, value = param.partition('=')
+        if '"' in value:
+            value = value.strip('"').replace('_', ' ').replace('\\"', '"')
+        else:
+            try:
+                value = float(value) if '.' in value else int(value)
+            except ValueError:
+                return None, None
+        return key, value
+
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """Create an object with given parameters."""
+        args_list = args.split()
+        if not args_list:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        class_name, params = args_list[0], args_list[1:]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        valid_params = {}
+        for param in params:
+            key, value = self.process_param(param)
+            if key in HBNBCommand.valid_keys.get(class_name, []) and value is not None:
+                valid_params[key] = value
+        new_instance = HBNBCommand.classes[class_name](**valid_params)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
