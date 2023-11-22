@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Defines the State model for HBnB project."""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import os
@@ -8,7 +8,7 @@ from models.city import City
 
 storage_setting = os.getenv("HBNB_TYPE_STORAGE")
 
-class State(BaseModel):
+class State(BaseModel, Base):
     """Represents a state in the HBnB application."""
     __tablename__ = 'states'
     if storage_setting == "db":

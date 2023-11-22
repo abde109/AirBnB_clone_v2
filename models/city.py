@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """Defines the City model for the HBnB project."""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 import os
 
 env_storage_setting = os.getenv("HBNB_TYPE_STORAGE")
 
-class City(BaseModel):
+class City(BaseModel, Base):
     """Represents a city in the HBnB application."""
 
     __tablename__ = "urban_areas"

@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """Defines the User model for the HBnB project."""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 import os
 
 storage_option = os.getenv("HBNB_TYPE_STORAGE")
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """Representation of a user in the HBnB system."""
     __tablename__ = 'users'
     if storage_option == 'db':
