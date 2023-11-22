@@ -10,7 +10,7 @@ env_storage_setting = os.getenv("HBNB_TYPE_STORAGE")
 class City(BaseModel, Base):
     """Represents a city in the HBnB application."""
 
-    __tablename__ = "urban_areas"
+    __tablename__ = "cities"
     if env_storage_setting == "db":
         city_name = Column(String(128), nullable=False)
         related_state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
