@@ -1,20 +1,12 @@
 #!/usr/bin/python3
-"""Defines the City model for the HBnB project."""
-from models.base_model import BaseModel, Base
+""" City Module for HBNB project """
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-import os
+from models.base_model import BaseModel, Base
 
-env_storage_setting = os.getenv("HBNB_TYPE_STORAGE")
 
 class City(BaseModel, Base):
-    """Represents a city in the HBnB application."""
-
-    __tablename__ = "cities"
-    if env_storage_setting == "db":
-        city_name = Column(String(128), nullable=False)
-        related_state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
-        associated_places = relationship('Place', backref='urban_area', cascade='all, delete-orphan')
-    else:
-        city_name = ""
-        related_state_id = ""
+    """ The city class, contains state ID and name """
+    __tablename__ = 'cities'  # Represents the table name
+    name = Column(String(128), nullable=False)
+    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)

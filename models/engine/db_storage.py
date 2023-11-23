@@ -56,15 +56,10 @@ class DBStorage:
                     object_dict[key] = item
         return object_dict
 
-    def search(self, cls, id):
-        """Search for a particular object by its class and id."""
-        if cls and id:
-            return self.__session.query(cls).get(id)
-        return None
-
     def new(self, obj):
         """Adds a new object to the current session."""
-        self.__session.add(obj)
+        if obj :
+            self.__session.add(obj)
 
     def save(self):
         """Commits changes in the current session to the database."""
@@ -74,7 +69,3 @@ class DBStorage:
         """Removes an object from the current session."""
         if obj:
             self.__session.delete(obj)
-
-    def close(self):
-        """Closes the session."""
-        self.__session.close()

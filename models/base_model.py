@@ -47,6 +47,7 @@ class BaseModel:
         dictionary['created_at'] = dictionary['created_at'].isoformat() if 'created_at' in dictionary else None
         dictionary['updated_at'] = dictionary['updated_at'].isoformat() if 'updated_at' in dictionary else None
         return dictionary
+    
     def delete(self):
             """Delete the current instance from the storage"""
             from models import storage
