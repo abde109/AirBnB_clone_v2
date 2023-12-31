@@ -24,7 +24,7 @@ def HBNB():
 @app.route('/c/<text>', strict_slashes=False)
 def C(text):
     """ method return C """
-    return 'C {}'.text
+    return 'C {}'.format(text.replace('_', ' '))
 
 
 if (__name__ == '__main__'):
