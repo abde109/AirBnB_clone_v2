@@ -11,6 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 
+
 class DBStorage:
     """New Database Storage for HBnB clone"""
 
@@ -36,7 +37,8 @@ class DBStorage:
     def reload(self):
         """Initializes the session for the database."""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         ScopedSession = scoped_session(session_factory)
         self.__session = ScopedSession()
 
@@ -44,7 +46,7 @@ class DBStorage:
         """Queries the database session for all objects or a specific class."""
         object_dict = {}
         model_classes = [User, Place, State, City, Amenity, Review]
-        
+
         if model:
             for item in self.__session.query(model).all():
                 key = f"{item.__class__.__name__}.{item.id}"
@@ -58,7 +60,7 @@ class DBStorage:
 
     def new(self, obj):
         """Adds a new object to the current session."""
-        if obj :
+        if obj:
             self.__session.add(obj)
 
     def save(self):
@@ -69,3 +71,7 @@ class DBStorage:
         """Removes an object from the current session."""
         if obj:
             self.__session.delete(obj)
+
+    def close(self):
+        """Close the session"""
+        self.__session.close()

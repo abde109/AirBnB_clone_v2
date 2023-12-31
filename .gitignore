@@ -7,3 +7,4 @@ models/__pycache__/
 models/engine/__pycache__/
 *.txt
 versions/
+main.py
