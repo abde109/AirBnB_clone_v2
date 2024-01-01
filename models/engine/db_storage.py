@@ -11,6 +11,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 
+model_classes = [User, Place, State, City, Amenity, Review]
+
 
 class DBStorage:
     """New Database Storage for HBnB clone"""
@@ -45,17 +47,16 @@ class DBStorage:
     def all(self, model=None):
         """Queries the database session for all objects or a specific class."""
         object_dict = {}
-        model_classes = [User, Place, State, City, Amenity, Review]
+        model_classes = [User, Place, State, City, Amenity,
+                         Review]
 
-        if model:
-            for item in self.__session.query(model).all():
-                key = f"{item.__class__.__name__}.{item.id}"
-                object_dict[key] = item
-        else:
-            for cls in model_classes:
-                for item in self.__session.query(cls).all():
-                    key = f"{item.__class__.__name__}.{item.id}"
-                    object_dict[key] = item
+        for model_class in model_classes:
+            if model is None or model is model_class:
+                objs = self.__session.query(model_class).all()
+                for obj in objs:
+                    key = f"{obj.__class__.__name__}.{obj.id}"
+                    object_dict[key] = obj
+
         return object_dict
 
     def new(self, obj):
