@@ -13,10 +13,10 @@ def cities_by_states():
 
 
 @app.teardown_appcontext
-def close_db(error):
+def close_db(exception):
     """ method to remove the current SQLAlchemy Session """
     storage.close()
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port='5000')
